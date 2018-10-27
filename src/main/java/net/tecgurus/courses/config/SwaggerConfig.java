@@ -35,8 +35,9 @@ public class SwaggerConfig {
     private String appMaintainerUrl;
 
     @Bean
-    public Docket api() {
+    public Docket docket1() {
 
+        // Builder
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())

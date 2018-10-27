@@ -2,6 +2,7 @@ package net.tecgurus.courses.service;
 
 import net.tecgurus.courses.dto.course.CourseCreateDTO;
 import net.tecgurus.courses.dto.course.CourseOutDTO;
+import net.tecgurus.courses.dto.course.CourseUpdateDTO;
 import net.tecgurus.courses.persistence.model.Course;
 import net.tecgurus.courses.persistence.repository.CourseRepository;
 import org.modelmapper.ModelMapper;
@@ -82,6 +83,34 @@ public class CourseService {
         Course savedCourse = courseRepository.save(course);
 
         return modelMapper.map(savedCourse, CourseOutDTO.class);
+    }
+
+    public CourseOutDTO updateCourse(Long courseId, CourseUpdateDTO courseUpdateDTO) throws Exception {
+
+        CourseOutDTO courseFound = findCourseById(courseId);
+
+        /* Primera forma
+        courseFound.setName(courseUpdateDTO.getName());
+        courseFound.setDescription(courseUpdateDTO.getDescription());
+        */
+
+        // Segunda forma
+        modelMapper.map(courseUpdateDTO, courseFound);
+
+        Course course = modelMapper.map(courseFound, Course.class);
+
+        courseRepository.save(course);
+
+        return courseFound;
+    }
+
+    public CourseOutDTO deleteCourse(Long courseId) throws Exception {
+
+        CourseOutDTO courseFound = findCourseById(courseId);
+
+        courseRepository.deleteById(courseFound.getId());
+
+        return courseFound;
     }
 
 }
